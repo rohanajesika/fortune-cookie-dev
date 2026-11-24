@@ -1,0 +1,36 @@
+Fortune Cookie Wisdom for Developers — local test evidence
+Competition: u-gentle-koala-60-fortune-cookie-wisdom-for-developers-025ccf44
+Entry line: "A bug found in review costs a comment; the same bug in production costs a weekend."
+Chars: 82, bytes: 82, gate 1-120: PASS
+
+v1 run (Node 24.22.1, local): exit 0, entry.txt md5 44a2950d2d797480cd12df00cd3f91fd
+v1 determinism: 3 consecutive runs, same md5 44a2950d2d797480cd12df00cd3f91fd
+v2 run after real revision (added validation: >=2 words, terminal
+punctuation, no leading/trailing whitespace): exit 0, byte-identical
+entry.txt md5 44a2950d2d797480cd12df00cd3f91fd
+
+Negative tests (copies outside the repo, each must exit 1 with no entry.txt):
+- newline smuggled into the line -> exit 1, "line must not contain control characters", no entry.txt
+- trailing space -> exit 1, "line must end with terminal punctuation", no entry.txt
+- 180-character line -> exit 1, "line is 180 characters, must be 1-120", no entry.txt
+
+Grader simulation (real Node 22.21.1 binary, ~/workspace/makefun/_tools/node22):
+- entry folder read-only, run as user nobody (uid 65534) from cwd /,
+  no network (unshare -n), MAKEFUN_OUTPUT_DIR to an empty writable dir
+- exit 0 in 0.15s, output byte-identical (md5 44a2950d2d797480cd12df00cd3f91fd)
+- stale file inside the output dir left intact; output directory never deleted
+- no fetch, no clock, no randomness in main.ts (deterministic)
+
+Quality review vs the judge brief (criteria in order):
+1. One original fortune-cookie line for a developer, not a slogan,
+   punchline or generic advice: a wisdom statement about review vs
+   production, in fortune-cookie form. PASS
+2. Reads like a real fortune cookie: one short balanced sentence,
+   two clauses, lands in a single breath. PASS
+3. True about a developer's day: code review and production bugs,
+   lived by every senior engineer. PASS
+4. Fresh turn: pricing the same bug in comments against weekends —
+   not a familiar saying. PASS
+5. Quiet twist / double meaning: the bug never changes, only where
+   it is caught; the price jumps from a sentence to two days of
+   your life. PASS
